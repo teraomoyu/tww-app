@@ -1,6 +1,0 @@
-<p>キーワードは「単語１」，「単語２」，「単語３」です．{{ random_mood }}雰囲気で書きましょう．</p>
-<form action="{% url 'tww:create' %}" method="post">
-    {% csrf_token %}
-    <textarea cols="100" rows="10"></textarea>
-    <input type="submit" value="作成">
-</form>
