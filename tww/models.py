@@ -7,6 +7,7 @@ class Mood(models.Model):
     def __str__(self):
         return self.mood_text
 
+
 class Writing(models.Model):
     writing_text = models.TextField(max_length=400)
     user_name = models.CharField(max_length=20)
