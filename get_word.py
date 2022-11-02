@@ -50,7 +50,30 @@ def get_adjective(load_urls):
         )
     ]
     words = list(set(words))
-    set_trace()
+    return words
+
+
+def get_verb(load_urls):
+    html = requests.get(load_urls["verb"])
+    soup = BeautifulSoup(html.content, "html.parser")
+    tables = soup.find_all("table")
+
+    tr_tags = [i.find_all("tr")[1::2] for i in tables]
+    words = [
+        re.sub(
+            "（(.*)）|\((.*)\)|\((.*)|（(.*)|「(.*)」|＜(.*)＞|\xa0|\u3000|＊|[A-Za-z]",
+            "",
+            w,
+        )
+        for tr_tag in tr_tags
+        for tr in tr_tag
+        for td in tr.find_all("td")
+        for w in re.split("\n| ", td.get_text())
+        if re.search(r"[ぁ-んァ-ン一丁-齢龍]", w) and not re.search(r":|：", w)
+    ]
+    words = [i for i in list(set(words)) if i != ""]
+    # print(words)
+    # set_trace()
     return words
 
 
@@ -63,7 +86,8 @@ def main():
         "conjunction": "https://jn1et.com/list-conjunction-interrogative/",  # 接続詞・疑問詞
     }
     # nouns = get_noun(load_urls)
-    adjectives = get_adjective(load_urls)
+    # adjectives = get_adjective(load_urls)
+    verb = get_verb(load_urls)
 
 
 if __name__ == "__main__":
